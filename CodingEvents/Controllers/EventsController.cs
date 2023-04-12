@@ -62,7 +62,6 @@ namespace CodingEvents.Controllers
 
             return View(addEventViewModel);
         }
-
         public IActionResult Delete()
         {
             ViewBag.events = context.Events.ToList();
