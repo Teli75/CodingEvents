@@ -14,6 +14,15 @@ namespace CodingEvents.Data
  		public EventDbContext(DbContextOptions<EventDbContext> options) : base(options)
 		{
 		}
-	}
+
+        //if entity type is not already part of the model it will be updated with this
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Event>()
+            .HasMany(e => e.Tags)
+            .WithMany(e => e.Events)
+            .UsingEntity(j => j.ToTable("EventTags"));
+        }
+    }
 }
 

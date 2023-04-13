@@ -46,5 +46,45 @@ namespace CodingEvents.Controllers
 
             return View("Add", tag);
         }
+
+        //takes in id of event from the addEvent Form under View/Tag/Add view
+        //localhost: [port]/tag/addEvent/{EventdId?}
+        public IActionResult AddEvent(int id)
+        {
+            //How are these ids passed through again? 
+            Event theEvent = context.Events.Find(id);
+            List<Tag> possibleTags = context.Tags.ToList();
+
+            AddEventTagViewModel viewModel = new AddEventTagViewModel(theEvent, possibleTags);
+            return View(viewModel);
+        }                                          
+
+        [HttpPost]
+        public IActionResult AddEvent(AddEventTagViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                int eventId = viewModel.EventId;
+                int tagId = viewModel.TagId;
+
+                    Event theEvent = context.Events.Include(r => r.Tags).Where(e=>e.Id == eventId).First();
+                
+                //first() stops duplicates. Only first instance
+                Tag theTag = context.Tags.Where(t => t.Id ==  tagId).First();
+               
+                theEvent.Tags.Add(theTag);
+
+                context.SaveChanges();
+                return Redirect("/Events/Detail/" + eventId);
+            }
+            return View(viewModel);
+        }
+
+        public IActionResult Detail(int id)
+        {
+            //wherever TagId in database matches with the id passed in the parameter, Event objects are being grabbed from the database??
+            Tag theTag = context.Tags.Include(e => e.Events).Where(t => t.Id == id).First();
+            return View(theTag);
+        }
     }
 }
