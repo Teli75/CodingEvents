@@ -4,16 +4,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CodingEvents.Data
 {
-	public class EventDbContext : DbContext
-	{
-		public DbSet<Event> Events { get; set; }
-		public DbSet<EventCategory> Categories { get; set; }
-		public DbSet<Tag> Tags { get; set; }
+    public class EventDbContext : DbContext
+    {
+        public DbSet<Event> Events { get; set; }
+        public DbSet<EventCategory> Categories { get; set; }
+        public DbSet<Tag> Tags { get; set; }
 
 
- 		public EventDbContext(DbContextOptions<EventDbContext> options) : base(options)
-		{
-		}
+        public EventDbContext(DbContextOptions<EventDbContext> options) : base(options)
+        {
+        }
 
         //if entity type is not already part of the model it will be updated with this
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -22,6 +22,10 @@ namespace CodingEvents.Data
             .HasMany(e => e.Tags)
             .WithMany(e => e.Events)
             .UsingEntity(j => j.ToTable("EventTags"));
+
+        
+
+
         }
     }
 }
