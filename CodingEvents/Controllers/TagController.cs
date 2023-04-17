@@ -82,7 +82,8 @@ namespace CodingEvents.Controllers
 
         public IActionResult Detail(int id)
         {
-            //wherever TagId in database matches with the id passed in the parameter, Event objects are being grabbed from the database??
+            //this loads the Tags table and event objects associated with the tag obj
+            //"where" filters the results of the query by only returning tag objects whose ID property matches the parameter id
             Tag theTag = context.Tags.Include(e => e.Events).Where(t => t.Id == id).First();
             return View(theTag);
         }

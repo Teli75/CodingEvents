@@ -23,9 +23,6 @@ namespace CodingEvents.Data
             .WithMany(e => e.Events)
             .UsingEntity(j => j.ToTable("EventTags"));
 
-        
-
-
         }
     }
 }
